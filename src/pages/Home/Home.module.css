@@ -16,7 +16,7 @@
     max-height: 100vh;
     text-align: center;
     margin: 0 auto;
-    overflow-y: auto;
+    overflow-y: auto;   
     overflow-x: hidden;
     position: relative;
 }

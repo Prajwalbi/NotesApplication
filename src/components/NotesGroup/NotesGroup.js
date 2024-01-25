@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import styles from './NotesGroup.module.css'
+import { generateInitials } from '../../utils/constants'
 
 export const NotesGroup = (props) => {
-  const [updateGroup, setUpdateGroup] = useState(true)
-
- 
+  
   return (
     <>
       <div className={styles.container}>
         <h1>Pocket Notes</h1>
         {props.groups && props.groups.map((group) => (
-          <div style={{cursor:"pointer"}} onClick={()=>props.getNotes(group.id,group.text)} key={group.id} className={styles.notes_group}>
-            <p><span style={{backgroundColor:`${group.color}`}}>HE</span>{group.text}</p>
+          <div style={{cursor:"pointer"}} onClick={()=>props.getNotes(group.id)} key={group.id} className={styles.notes_group}>
+            <p><span style={{backgroundColor:`${group.color}`}}>{generateInitials(group.text)}</span>{group.text}</p>
           </div>
         ))}
 

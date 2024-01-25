@@ -8,15 +8,16 @@ import { Modal } from '../../components/Modal/Modal'
 export const Home = () => {
   const [showModal,setShowModal] = useState(false)
   const [groups, setGroups] = useState(()=>JSON.parse(localStorage.getItem("createdGroups"))) //for notes group 
-  const [groupId,setGroupId] = useState(0)
-  const [groupText,setGroupText] = useState("hello")
-
+  const [groupId,setGroupId] = useState()
+  const [home,setHome] = useState(true)
+   
+  
   const updateGroups = (newGroup) => {
        setGroups(newGroup)
   }
-  const getNotes = (id,text)=>{
+  const getNotes = (id)=>{
      setGroupId(id)
-
+     setHome(false)
   }
   useEffect(() => {
     localStorage.setItem("createdGroups", JSON.stringify(groups));
@@ -28,8 +29,8 @@ export const Home = () => {
         <NotesGroup setShowModal={setShowModal} groups={groups} getNotes={getNotes}/>
       </div>
       <div className={styles.right}>
-        {/* <NotesHome/> */}
-        <NotesDisplay groupId={groupId} />
+        
+        { home ? <NotesHome/> : <NotesDisplay groupId={groupId} />}
        {showModal && <Modal setShowModal={setShowModal} updateGroups={updateGroups}/>}
       </div>
       

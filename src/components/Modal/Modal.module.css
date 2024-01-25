@@ -4,11 +4,13 @@
     min-width: 40vw;
     max-width: 45vw;
     z-index: 1;
-    position: sticky;
+    position: absolute;
     bottom: 50%;
-    left: 10%;
+    left: 0%;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
+    overflow: hidden;
 
 }
 .content {
@@ -112,5 +114,6 @@
     line-height: 160.188%; /* 32.038px */
     letter-spacing: 0.7px;
     cursor: pointer;
+    margin-right: 2rem;
     
 }

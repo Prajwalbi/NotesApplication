@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import arrow from '../../assets/arrow.png'
 import styles from './NotesDisplay.module.css'
+import { generateInitials } from '../../utils/constants'
 
 export const NotesDisplay = (props) => {
     const [displayNotes, setDisplayNotes] = useState(() => {
@@ -9,7 +10,8 @@ export const NotesDisplay = (props) => {
     }); // load previously stored notes
     const [currentNote, setCurrentNote] = useState() // auxillary note for temp store
     const [note, setNote] = useState(displayNotes[props.groupId] || { notes: [] });
-
+    const [enable,setEnable] = useState(false)
+    const text = useRef(null);
     
     useEffect(() => {
         // Retrieve data from local storage
@@ -26,31 +28,39 @@ export const NotesDisplay = (props) => {
         console.log(note.text);
     }, [props.groupId, setDisplayNotes]);
     
-   
+    
     const handleText = (e) => {
-        setCurrentNote(e.target.value)
+        
+        if(e.target.value.length < 1){
+            setEnable(false)
+        }else {
+            setEnable(true)
+            setCurrentNote(e.target.value)
+        }
     }
 
-    const handleSaveNotes = () => {
+    const handleSaveNotes = (e) => {
         const newNote = {
             text: currentNote,
             date: new Date().toLocaleDateString(), // Example date format
             time: new Date().toLocaleTimeString(), // Example time format
         };
 
-        
+        if(enable){
         setDisplayNotes((prevNotes) => {
             const updatedNotes = [...prevNotes];
             updatedNotes[props.groupId].notes.push(newNote);
             localStorage.setItem("createdGroups", JSON.stringify(displayNotes))
+            
             return updatedNotes;
         });
+    }
         
     }
     return (
         <div className={styles.main}>
             <div className={styles.header}>
-                <h1> <span>MN</span> {note?.text} </h1>
+                <h1> <span style={{backgroundColor:`${note.color}`}}>{generateInitials(note.text)}</span> {note?.text} </h1>
             </div>
             <div className={styles.notes_section}>
                 {note.notes.length > 0 && note.notes.map((note,idx) => (
@@ -61,7 +71,7 @@ export const NotesDisplay = (props) => {
                 ))}
             </div>
             <div className={styles.text_area}>
-                <textarea onChange={(e) => handleText(e)} name="" id="" cols="130" rows="10" placeholder='Enter text here...'></textarea>
+                <textarea ref={text} onChange={(e) => handleText(e)} name="" id="" cols="130" rows="10" placeholder='Enter text here...'></textarea>
                 <img onClick={handleSaveNotes} src={arrow} alt="" />
             </div>
         </div>
