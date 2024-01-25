@@ -1,0 +1,22 @@
+.main {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    background: #DAE5F5;
+}
+.left {
+    max-width: 30vw;
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+}
+.right {
+    max-width: 70vw;
+    max-height: 100vh;
+    text-align: center;
+    margin: 0 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
