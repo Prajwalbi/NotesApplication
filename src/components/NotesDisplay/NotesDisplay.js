@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import arrow from '../../assets/arrow.png'
+import arrow2 from '../../assets/arrow2.png'
 import styles from './NotesDisplay.module.css'
 import { generateInitials } from '../../utils/constants'
 
@@ -10,33 +11,34 @@ export const NotesDisplay = (props) => {
     }); // load previously stored notes
     const [currentNote, setCurrentNote] = useState() // auxillary note for temp store
     const [note, setNote] = useState(displayNotes[props.groupId] || { notes: [] });
-    const [enable,setEnable] = useState(false)
+    const [enable, setEnable] = useState(false)
     const text = useRef(null);
-    
+
     useEffect(() => {
         // Retrieve data from local storage
         const storedData = JSON.parse(localStorage.getItem("createdGroups"));
         const cleanData = Array.isArray(storedData) ? storedData : [];
-    
+
         // Update displayNotes state
         setDisplayNotes(cleanData);
-    
+
         // Update note state using the callback function
         setNote(prevNote => cleanData[props.groupId] || { notes: [] });
-    
+
         // Log the updated note text
         console.log(note.text);
     }, [props.groupId, setDisplayNotes]);
-    
-    
+
+
     const handleText = (e) => {
         
-        if(e.target.value.length < 1){
-            setEnable(false)
-        }else {
+        if((e.target.value).trim().length > 0){
+            setCurrentNote((e.target.value).trim())
             setEnable(true)
-            setCurrentNote(e.target.value)
+        }else{
+            setEnable(false)
         }
+        
     }
 
     const handleSaveNotes = (e) => {
@@ -46,24 +48,27 @@ export const NotesDisplay = (props) => {
             time: new Date().toLocaleTimeString(), // Example time format
         };
 
-        if(enable){
-        setDisplayNotes((prevNotes) => {
-            const updatedNotes = [...prevNotes];
-            updatedNotes[props.groupId].notes.push(newNote);
-            localStorage.setItem("createdGroups", JSON.stringify(displayNotes))
-            
-            return updatedNotes;
-        });
-    }
-        
+        if (currentNote && currentNote.length !== 0) {
+            setDisplayNotes((prevNotes) => {
+                const updatedNotes = [...prevNotes];
+                updatedNotes[props.groupId].notes.push(newNote);
+                localStorage.setItem("createdGroups", JSON.stringify(displayNotes))
+                text.current.value = ""
+                setCurrentNote("")
+                return updatedNotes;
+            });
+        } else {
+            return;
+        }
+
     }
     return (
         <div className={styles.main}>
             <div className={styles.header}>
-                <h1> <span style={{backgroundColor:`${note.color}`}}>{generateInitials(note.text)}</span> {note?.text} </h1>
+                <p style={{ backgroundColor: `${note.color}` }}>{generateInitials(note.text)}</p> <h1>{note?.text} </h1>
             </div>
             <div className={styles.notes_section}>
-                {note.notes.length > 0 && note.notes.map((note,idx) => (
+                {note.notes.length > 0 && note.notes.map((note, idx) => (
                     <div key={idx} className={styles.notes}>
                         <p>{note.text}</p>
                         <h4>{note.date} &bull; {note.time}</h4>
@@ -71,8 +76,12 @@ export const NotesDisplay = (props) => {
                 ))}
             </div>
             <div className={styles.text_area}>
-                <textarea ref={text} onChange={(e) => handleText(e)} name="" id="" cols="130" rows="10" placeholder='Enter text here...'></textarea>
-                <img onClick={handleSaveNotes} src={arrow} alt="" />
+                <textarea onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                        handleSaveNotes();
+                    }
+                }} ref={text} onChange={(e) => handleText(e)} name="" id="" cols="130" rows="10" placeholder='Enter text here...'></textarea>
+                <img onClick={handleSaveNotes} src={enable ? arrow2 : arrow} alt="" />
             </div>
         </div>
     )

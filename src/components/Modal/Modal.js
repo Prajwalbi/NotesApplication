@@ -45,7 +45,7 @@ export const Modal = (props) => {
             <div className={styles.content}>
                 <h1>Create New Group</h1>
                 <div className={styles.text}>
-                    <label htmlFor="group">Group Name <input onChange={(e)=>handleChange(e)}  type="text" name="group" placeholder='Enter Group Name' /></label>
+                    <label htmlFor="group">Group Name <input maxLength={15} onChange={(e)=>handleChange(e)}  type="text" name="group" placeholder='Enter Group Name' /></label>
                 </div>
                 <div className={styles.colors}>
                     <h1>Choose Color</h1>
