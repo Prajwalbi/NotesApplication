@@ -53,17 +53,6 @@
     letter-spacing: 0.48px;
     
 }
-/* .notes_group span {
-    margin: 1rem;
-    padding: 0.6rem;
-    border-radius: 50%;
-    height: 30px;
-    width: 30px;
-        display: flex;
-        justify-content: center;
-    border-radius: 50%;
-    
-} */
 .container > button {
     position: fixed;
     left: 23%;
