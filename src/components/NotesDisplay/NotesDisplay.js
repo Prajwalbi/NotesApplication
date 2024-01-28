@@ -44,8 +44,8 @@ export const NotesDisplay = (props) => {
     const handleSaveNotes = (e) => {
         const newNote = {
             text: currentNote,
-            date: new Date().toLocaleDateString(), // Example date format
-            time: new Date().toLocaleTimeString(), // Example time format
+            date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
+            time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
         };
 
         if (currentNote && currentNote.length !== 0) {

@@ -7,7 +7,7 @@
     justify-content: center;
     align-items: center; 
     min-height: 60vh;
-    flex-grow: 1; /* Allow the section to grow and take available space */
+    flex-grow: 1; 
     overflow-y: auto; 
     z-index: 1;
     margin-bottom: 13rem;

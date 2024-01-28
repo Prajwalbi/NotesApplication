@@ -1,7 +1,7 @@
-import React, { useEffect, useState,useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styles from './Modal.module.css'
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
+import 'react-toastify/dist/ReactToastify.css';
 import { colors } from '../../utils/constants'
 import { useModal } from './ModalContext';
 
@@ -39,36 +39,39 @@ export const Modal = (props) => {
                     notes: []
 
                 }
+
+
                 const updatedGroups = [...createdGroups, newGroup]
                 localStorage.setItem("createdGroups", JSON.stringify(updatedGroups))
                 props.updateGroups(updatedGroups)
                 setGroupName("")
                 setSelectedColor(null)
-                props.setShowModal(false)
+                setShowModal(false)
+                toast.success("Group Created Successfully!!")
             } else {
                 toast.error('Group Name already Exists!')
             }
 
         } else {
-            toast.error('Please Type Group Name and Select Color!!');
+            toast.error('Please Enter Group Name and Select Color !!');
         }
 
     }
     useEffect(() => {
         const handleClickOutsideModal = (event) => {
-          if (modalRef.current && !modalRef.current.contains(event.target)) {
-            setShowModal(false);
-          }
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                setShowModal(false);
+            }
         };
-    
+
         document.addEventListener('mousedown', handleClickOutsideModal);
-    
+
         return () => {
-          document.removeEventListener('mousedown', handleClickOutsideModal);
+            document.removeEventListener('mousedown', handleClickOutsideModal);
         };
-      }, [setShowModal]);
+    }, [setShowModal]);
     return (
-        <div className={styles.container} id="modal" ref={modalRef}>
+        <div className={styles.container} id="modal" ref={modalRef} style={{ display: showModal ? 'flex' : 'none' }}>
             <div className={styles.content}>
                 <h1>Create New Group</h1>
                 <div className={styles.text}>
@@ -90,18 +93,18 @@ export const Modal = (props) => {
             <div className={styles.btn}>
                 <button onClick={handleCreate}>Create</button>
                 <ToastContainer
-                position="top-right"
-                autoClose={2000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                closeButton={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"/>
-              
+                    position="top-right"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    closeButton={false}
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark" />
+
             </div>
         </div>
 
