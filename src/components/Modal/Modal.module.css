@@ -1,18 +1,21 @@
 .container {
-    background-color: white;
+    background-color: #DAE5F5;
     min-height: 30vh;
-    min-width: 40vw;
+    width: 40vw;
     max-width: 45vw;
     z-index: 1;
-    position: absolute;
-    bottom: 50%;
-    left: 0%;
+    position: fixed;
+    bottom: 30%;
+    left: 20%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     overflow: hidden;
+    border-radius: 10px;
+    margin-right: 1rem;
 
 }
+
 .content {
     display: flex;
     flex-direction: column;
@@ -21,79 +24,67 @@
     row-gap: 1rem;
     margin: 1rem;
 }
-.content > h1 {
+
+.content>h1 {
     color: #000;
     font-family: Roboto;
     font-size: 2vw;
     font-style: normal;
-    font-weight: 500;
-    line-height: 160.188%; /* 46.454px */
+    font-weight: bolder;
+    line-height: 160.188%;
     letter-spacing: 1.015px;
 }
-.text > label {
+
+.text>label {
     color: #000;
     font-family: Roboto;
     font-size: 2vw;
     font-style: normal;
     font-weight: 500;
-    line-height: 160.188%; /* 43.754px */
+    line-height: 160.188%;
     letter-spacing: 0.5px;
 }
+
 .text input {
     border-radius: 22px;
     border: 2px solid #CCC;
     background: #FFF;
     padding: 0.5rem;
-    margin-left: 1.5rem;
+    margin-left: 1.2rem;
 }
-.text input:focus {
-    border: blue;
-}
+
 .colors {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
-.colors > h1 {
+
+.colors>h1 {
     color: #000;
     font-family: Roboto;
     font-size: 2vw;
     font-style: normal;
     font-weight: 500;
-    line-height: 160.188%; /* 43.754px */
+    line-height: 160.188%;
     letter-spacing: 0.5px;
     margin-right: 2rem;
-    }
+}
+
 .color {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
-.color > p {
+
+.color>p {
     height: 20px;
     width: 20px;
     margin: 0.5rem;
     border-radius: 50%;
     cursor: pointer;
 }
-.color > p:nth-child(1){
-    background-color: #B38BFA;
-}
-.color > p:nth-child(2){
-    background-color: #FF79F2;
-}
-.color > p:nth-child(3){
-    background-color: #43E6FC;
-}
-.color > p:nth-child(4){
-    background-color: #F19576;
-}
-.color > p:nth-child(5){
-    background-color: #0047FF;
-}
-.color > p:nth-child(6){
-    background-color: #6691FF;
-}
+
+
 .btn {
     display: flex;
     flex-direction: column;
@@ -101,6 +92,7 @@
     padding-bottom: 1rem;
     padding-left: 1rem;
 }
+
 .btn button {
     border-radius: 11px;
     background: #001F8B;
@@ -111,9 +103,46 @@
     font-size: 1.2rem;
     font-style: normal;
     font-weight: 400;
-    line-height: 160.188%; /* 32.038px */
+    line-height: 160.188%;
     letter-spacing: 0.7px;
     cursor: pointer;
     margin-right: 2rem;
-    
+
+}
+
+@media (max-width:768px) {
+    .container {
+        background-color: #DAE5F5;
+        min-height: 30vh;
+        min-width: 90vw;
+        z-index: 1;
+        position: fixed;
+        bottom: 40%;
+        left: 3%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow: hidden;
+    }
+
+    .content>h1 {
+        font-size: 1.5rem;
+    }
+    .colors>h1 {
+        font-size: 0.8rem;
+        font-style: normal;
+        font-weight: bold;
+        margin-right: 0.5rem;
+    }
+    .text>label {
+        font-size: 0.8rem;
+        font-weight: bolder;
+    }
+    .color>p {
+        margin: 0.2rem;
+    }
+    .text input {
+        margin-left: 0rem;
+        font-size: 0.8rem;
+    }
 }

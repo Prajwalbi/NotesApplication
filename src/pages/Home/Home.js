@@ -4,13 +4,17 @@ import { NotesGroup } from '../../components/NotesGroup/NotesGroup'
 import { NotesHome } from '../../components/NotesHome/NotesHome'
 import { NotesDisplay } from '../../components/NotesDisplay/NotesDisplay'
 import { Modal } from '../../components/Modal/Modal'
+import { useModal } from '../../components/Modal/ModalContext'
 
 export const Home = () => {
-  const [showModal, setShowModal] = useState(false)
+  // const [showModal, setShowModal] = useState(false)
   const [groups, setGroups] = useState(() => JSON.parse(localStorage.getItem("createdGroups"))) //for notes group 
   const [groupId, setGroupId] = useState()
   const [home, setHome] = useState(true)
   const [isMobileView, setIsMobileView] = useState(false)
+  const [displayNotes, setDisplayNotes] = useState(false)
+  const [back,setBack] = useState(false)
+  const { showModal, setShowModal } = useModal();
 
 
   const updateGroups = (newGroup) => {
@@ -19,33 +23,43 @@ export const Home = () => {
   const getNotes = (id) => {
     setGroupId(id)
     setHome(false)
+    setDisplayNotes(true)
+    setBack(false)
   }
   const checkIsMobileView = () => {
-    if (window.innerWidth < 768) {
+    if (window.innerWidth <= 768) {
       setIsMobileView(true);
     } else {
       setIsMobileView(false);
     }
   }
+  const goBack = ()=>{
+    setBack(true)
+    setDisplayNotes(false)
+  }
   useEffect(() => {
     localStorage.setItem("createdGroups", JSON.stringify(groups));
   }, [groups]);
 
-    useEffect(() => {
-      checkIsMobileView();
-      window.addEventListener('resize', checkIsMobileView);
-      return () => {
-        window.removeEventListener('resize', checkIsMobileView);
-      };
-    }, [])
+  useEffect(() => {
+    checkIsMobileView();
+    window.addEventListener('resize', checkIsMobileView);
+    return () => {
+      window.removeEventListener('resize', checkIsMobileView);
+    };
+  }, [])
+
+  
   return (
     <div className={styles.main}>
       <div className={styles.left}>
-        <NotesGroup setShowModal={setShowModal} groups={groups} getNotes={getNotes} />
+        {!isMobileView && <NotesGroup setShowModal={setShowModal} groups={groups} getNotes={getNotes} />}
+        {(!displayNotes && isMobileView)&&<NotesGroup setShowModal={setShowModal} groups={groups} getNotes={getNotes} />}
+        {(showModal&&isMobileView) && <Modal setShowModal={setShowModal} updateGroups={updateGroups}/>}
+        {(displayNotes&&isMobileView&&!back) && <NotesDisplay groupId={groupId} goBack={goBack}/>}
       </div>
       <div className={styles.right}>
-
-        {home ? <NotesHome /> : <NotesDisplay groupId={groupId} />}
+        {!isMobileView && ( home ? <NotesHome /> : <NotesDisplay groupId={groupId} />)}
         {showModal && <Modal setShowModal={setShowModal} updateGroups={updateGroups} />}
 
       </div>

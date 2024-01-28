@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import arrow from '../../assets/arrow.png'
 import arrow2 from '../../assets/arrow2.png'
+import back_arrow from '../../assets/back_arrow.png'
 import styles from './NotesDisplay.module.css'
 import { generateInitials } from '../../utils/constants'
 
@@ -11,7 +12,7 @@ export const NotesDisplay = (props) => {
     }); // load previously stored notes
     const [currentNote, setCurrentNote] = useState() // auxillary note for temp store
     const [note, setNote] = useState(displayNotes[props.groupId] || { notes: [] });
-    const [enable, setEnable] = useState(false)
+    const [enableSubmitButton, setEnableSubmitButton] = useState(false)
     const text = useRef(null);
 
     useEffect(() => {
@@ -26,7 +27,6 @@ export const NotesDisplay = (props) => {
         setNote(prevNote => cleanData[props.groupId] || { notes: [] });
 
         // Log the updated note text
-        console.log(note.text);
     }, [props.groupId, setDisplayNotes]);
 
 
@@ -34,9 +34,9 @@ export const NotesDisplay = (props) => {
         
         if((e.target.value).trim().length > 0){
             setCurrentNote((e.target.value).trim())
-            setEnable(true)
+            setEnableSubmitButton(true)
         }else{
-            setEnable(false)
+            setEnableSubmitButton(false)
         }
         
     }
@@ -65,7 +65,9 @@ export const NotesDisplay = (props) => {
     return (
         <div className={styles.main}>
             <div className={styles.header}>
-                <p style={{ backgroundColor: `${note.color}` }}>{generateInitials(note.text)}</p> <h1>{note?.text} </h1>
+               <img onClick={()=>props.goBack()} src={back_arrow} alt="back button" />
+               <p style={{ backgroundColor: `${note.color}` }}>{generateInitials(note.text)}</p>
+               <h1>{note?.text} </h1>
             </div>
             <div className={styles.notes_section}>
                 {note.notes.length > 0 && note.notes.map((note, idx) => (
@@ -81,7 +83,7 @@ export const NotesDisplay = (props) => {
                         handleSaveNotes();
                     }
                 }} ref={text} onChange={(e) => handleText(e)} name="" id="" cols="130" rows="10" placeholder='Enter text here...'></textarea>
-                <img onClick={handleSaveNotes} src={enable ? arrow2 : arrow} alt="" />
+                <img onClick={handleSaveNotes} src={enableSubmitButton ? arrow2 : arrow} alt="" />
             </div>
         </div>
     )
