@@ -6,7 +6,17 @@
     position: relative;
     
 }
-
+.container::-webkit-scrollbar {
+    width: 5px; 
+  }
+  .container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Set the background color of the scrollbar track */
+    border-radius: 10px; /* Set the border radius of the scrollbar track */
+  }
+  .container::-webkit-scrollbar-thumb {
+    background: #888; /* Set the color of the scrollbar handle */
+    border-radius: 10px; /* Set the border radius of the scrollbar handle */
+  }
 .container h1 {
     color: #000;
     font-family: Roboto;
@@ -26,7 +36,7 @@
 
 .notes_group {
     text-align: left;
-    padding-left: 3rem;
+    padding-left: 2rem;
     padding-bottom: 1rem;
     position: relative;
     display: flex;

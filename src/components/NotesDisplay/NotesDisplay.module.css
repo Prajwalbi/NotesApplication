@@ -13,6 +13,7 @@
     margin-bottom: 13rem;
 }
 
+
 .header {
     background: #001F8B;
     width: 70vw;
@@ -96,7 +97,7 @@
     cursor: pointer;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 363px) {
     .notes {
         width: 80vw; 
     }
@@ -113,7 +114,23 @@
         width: 75vw; 
     }
 }
+@media (min-width:364px) and ( max-width:768px){
+    .notes {
+        width: 80vw; 
+    }
 
+    .header {
+        width: 100vw;
+    }
+
+    .text_area {
+        left: 4%; 
+    }
+
+    .text_area textarea {
+        width: 80vw; 
+    }
+}
 @media (min-width:769px){
     .header > img{
         display: none;

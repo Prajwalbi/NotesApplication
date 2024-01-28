@@ -16,10 +16,21 @@
     max-height: 100vh;
     text-align: center;
     margin: 0 auto;
-    overflow-y: auto;   
+    overflow-y: auto;    
     overflow-x: hidden;
     position: relative;
 }
+.right::-webkit-scrollbar {
+    width: 10px; 
+  }
+  .right::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px; 
+  }
+  .right::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 10px;
+  }
 @media (max-width:768px) {
     .left {
         min-width: 100vw;

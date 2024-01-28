@@ -7,7 +7,6 @@ export const NotesGroup = (props) => {
   const handleGroupClick = (groupId) => {
     props.getNotes(groupId)
     setSelectedGroupId(groupId)
-    // console.log(groupId)
   }
   return (
     <>
