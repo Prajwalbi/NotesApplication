@@ -80,6 +80,7 @@ export const NotesDisplay = (props) => {
             <div className={styles.text_area}>
                 <textarea onKeyDown={(e) => {
                     if (e.key === 'Enter') {
+                        e.preventDefault();
                         handleSaveNotes();
                     }
                 }} ref={text} onChange={(e) => handleText(e)} name="" id="" cols="130" rows="10" placeholder='Enter text here...'></textarea>
