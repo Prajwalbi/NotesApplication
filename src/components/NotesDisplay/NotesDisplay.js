@@ -81,6 +81,7 @@ export const NotesDisplay = (props) => {
                 <textarea onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                         e.preventDefault();
+                        setEnableSubmitButton(false)
                         handleSaveNotes();
                     }
                 }} ref={text} onChange={(e) => handleText(e)} name="" id="" cols="130" rows="10" placeholder='Enter text here...'></textarea>
