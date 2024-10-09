@@ -1,92 +1,89 @@
-import React, { useEffect, useRef, useState } from 'react'
-import arrow from '../../assets/arrow.png'
-import arrow2 from '../../assets/arrow2.png'
-import back_arrow from '../../assets/back_arrow.png'
-import styles from './NotesDisplay.module.css'
-import { generateInitials } from '../../utils/constants'
+import React, { useEffect, useRef, useState } from 'react';
+import arrow from '../../assets/arrow.png';
+import arrow2 from '../../assets/arrow2.png';
+import backArrow from '../../assets/back_arrow.png'; // Changed variable name
+import styles from './NotesDisplay.module.css';
+import { generateInitials } from '../../utils/constants';
 
 export const NotesDisplay = (props) => {
-    const [displayNotes, setDisplayNotes] = useState(() => {
-        const storedData = JSON.parse(localStorage.getItem("createdGroups"));
-        return Array.isArray(storedData) ? storedData : [];
-    }); // load previously stored notes
-    const [currentNote, setCurrentNote] = useState() // auxillary note for temp store
-    const [note, setNote] = useState(displayNotes[props.groupId] || { notes: [] });
-    const [enableSubmitButton, setEnableSubmitButton] = useState(false)
-    const text = useRef(null);
+    const [notesList, setNotesList] = useState(() => { // Changed variable name
+        const savedData = JSON.parse(localStorage.getItem("createdGroups")); // Changed variable name
+        return Array.isArray(savedData) ? savedData : [];
+    });
+
+    const [tempNote, setTempNote] = useState(); // Changed variable name
+    const [activeNote, setActiveNote] = useState(notesList[props.groupId] || { notes: [] }); // Changed variable name
+    const [isSubmitEnabled, setIsSubmitEnabled] = useState(false); // Changed variable name
+    const noteInput = useRef(null); // Changed variable name
 
     useEffect(() => {
-        // Retrieve data from local storage
+        // Retrieve data from localStorage
         const storedData = JSON.parse(localStorage.getItem("createdGroups"));
-        const cleanData = Array.isArray(storedData) ? storedData : [];
+        const validData = Array.isArray(storedData) ? storedData : [];
 
-        // Update displayNotes state
-        setDisplayNotes(cleanData);
+        // Update notes list state
+        setNotesList(validData);
 
-        // Update note state using the callback function
-        setNote(prevNote => cleanData[props.groupId] || { notes: [] });
+        // Update active note based on groupId
+        setActiveNote(validData[props.groupId] || { notes: [] });
 
-        // Log the updated note text
-    }, [props.groupId, setDisplayNotes]);
+    }, [props.groupId, setNotesList]);
 
-
-    const handleText = (e) => {
+    const handleInputChange = (e) => { // Changed function name
+        const trimmedValue = (e.target.value).trim();
         
-        if((e.target.value).trim().length > 0){
-            setCurrentNote((e.target.value).trim())
-            setEnableSubmitButton(true)
-        }else{
-            setEnableSubmitButton(false)
+        if (trimmedValue.length > 0) {
+            setTempNote(trimmedValue);
+            setIsSubmitEnabled(true);
+        } else {
+            setIsSubmitEnabled(false);
         }
-        
-    }
+    };
 
-    const handleSaveNotes = (e) => {
-        const newNote = {
-            text: currentNote,
+    const handleNoteSubmission = () => { // Changed function name
+        const newNoteData = {
+            text: tempNote,
             date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
             time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
         };
 
-        if (currentNote && currentNote.length !== 0) {
-            setDisplayNotes((prevNotes) => {
-                const updatedNotes = [...prevNotes];
-                updatedNotes[props.groupId].notes.push(newNote);
-                localStorage.setItem("createdGroups", JSON.stringify(displayNotes))
-                text.current.value = ""
-                setCurrentNote("")
-                return updatedNotes;
+        if (tempNote && tempNote.length !== 0) {
+            setNotesList((previousNotes) => {
+                const updatedNotesList = [...previousNotes];
+                updatedNotesList[props.groupId].notes.push(newNoteData);
+                localStorage.setItem("createdGroups", JSON.stringify(notesList)); // Changed variable name
+                noteInput.current.value = "";
+                setTempNote("");
+                return updatedNotesList;
             });
-        } else {
-            return;
         }
+    };
 
-    }
     return (
         <div className={styles.main}>
             <div className={styles.header}>
-               <img onClick={()=>props.goBack()} src={back_arrow} alt="back button" />
-               <p style={{ backgroundColor: `${note.color}` }}>{generateInitials(note.text)}</p>
-               <h1>{note?.text} </h1>
+                <img onClick={() => props.goBack()} src={backArrow} alt="back button" /> {/* Changed variable name */}
+                <p style={{ backgroundColor: `${activeNote.color}` }}>{generateInitials(activeNote.text)}</p> {/* Changed variable name */}
+                <h1>{activeNote?.text}</h1> {/* Changed variable name */}
             </div>
-            <div className={styles.notes_section}>
-                {note.notes.length > 0 && note.notes.map((note, idx) => (
-                    <div key={idx} className={styles.notes}>
+            <div className={styles.notesSection}> {/* Changed class name */}
+                {activeNote.notes.length > 0 && activeNote.notes.map((note, idx) => ( /* Changed variable name */
+                    <div key={idx} className={styles.noteItem}> {/* Changed class name */}
                         <p>{note.text}</p>
                         <h4>{note.date} &bull; {note.time}</h4>
                     </div>
                 ))}
             </div>
-            <div className={styles.text_area}>
+            <div className={styles.textArea}> {/* Changed class name */}
                 <textarea onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                         e.preventDefault();
-                        setEnableSubmitButton(false)
-                        handleSaveNotes();
+                        setIsSubmitEnabled(false);
+                        handleNoteSubmission();
                     }
-                }} ref={text} onChange={(e) => handleText(e)} name="" id="" cols="130" rows="10" placeholder='Enter text here...'></textarea>
-                <img onClick={handleSaveNotes} src={enableSubmitButton ? arrow2 : arrow} alt="" />
+                }} ref={noteInput} onChange={handleInputChange} cols="130" rows="10" placeholder='Enter text here...'></textarea> {/* Changed variable name */}
+                <img onClick={handleNoteSubmission} src={isSubmitEnabled ? arrow2 : arrow} alt="" /> {/* Changed variable name */}
             </div>
         </div>
-    )
-}
+    );
+};
